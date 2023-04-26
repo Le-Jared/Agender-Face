@@ -23,7 +23,7 @@ def faceBox(faceNet,frame):
             y2=int(detection[0,0,i,6]*frameHeight)
             bboxs.append([x1,y1,x2,y2])
             # Draw a rectangle around the face
-            cv2.rectangle(frame, (x1,y1),(x2,y2),(0,255,0), 1)
+            cv2.rectangle(frame, (x1,y1),(x2,y2),(0,0,255), 1)
     return frame, bboxs
 
 # Define the paths to the various neural network models
@@ -50,7 +50,11 @@ ageList = ['(0-2)', '(4-6)', '(8-12)', '(15-20)', '(25-32)', '(38-43)', '(48-53)
 genderList = ['Male', 'Female']
 
 #Open the video capture device
-video=cv2.VideoCapture(0)
+for i in range(10):
+    video = cv2.VideoCapture(i)
+    if video.isOpened():
+        print(f"Using camera index {i}")
+        break
 
 #Set the padding value to be added around the detected face region
 padding=20
@@ -82,7 +86,7 @@ while True:
 
         # Display the predicted gender and age on the frame
         label="{},{}".format(gender,age)
-        cv2.rectangle(frame,(bbox[0], bbox[1]-30), (bbox[2], bbox[1]), (0,255,0),-1) 
+        cv2.rectangle(frame,(bbox[0], bbox[1]-30), (bbox[2], bbox[1]), (0,0,255),-1) 
         cv2.putText(frame, label, (bbox[0], bbox[1]-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255,255,255), 2,cv2.LINE_AA)
     cv2.imshow("Age-Gender",frame)
 
